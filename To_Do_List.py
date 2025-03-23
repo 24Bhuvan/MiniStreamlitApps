@@ -1,12 +1,38 @@
 import streamlit as st
 
-st.session_state.tasks = st.session_state.get("tasks", [])
+# Title
+st.title("📝 To-Do List App")
 
-task = st.text_input("Add task:")
-if st.button("Add") and task:
-    st.session_state.tasks.append(task)
+# Initialize session state for tasks
+if "tasks" not in st.session_state:
+    st.session_state.tasks = []
 
-for i, t in enumerate(st.session_state.tasks):
-    if st.button(f"❌ {t}", key=i):
-        st.session_state.tasks.pop(i)
-        st.experimental_rerun()
+# Input for new task
+new_task = st.text_input("➕ Add a new task:")
+
+# Add Task Button
+if st.button("Add Task"):
+    if new_task:
+        st.session_state.tasks.append(new_task)
+        st.success(f"✅ Task added: {new_task}")
+    else:
+        st.warning("⚠️ Please enter a task before adding.")
+
+st.markdown("---")
+
+# Display Current Tasks
+st.subheader("📌 Your Tasks:")
+if st.session_state.tasks:
+    for i, task in enumerate(st.session_state.tasks):
+        col1, col2 = st.columns([0.8, 0.2])  # Layout for task & delete button
+        col1.write(f"🔹 {task}")
+        if col2.button("❌", key=f"remove_{i}"):  
+            st.session_state.tasks.pop(i)
+            st.experimental_rerun()  # Refresh the app after deletion
+else:
+    st.info("No tasks added yet. Start by adding a new task!")
+
+# Footer
+st.markdown("---")
+st.write("📌 A simple to-do list app built with **Streamlit**. 🚀")
+
