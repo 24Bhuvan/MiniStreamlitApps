@@ -28,7 +28,7 @@ if st.session_state.tasks:
         col1.write(f"🔹 {task}")
         if col2.button("❌", key=f"remove_{i}"):  
             st.session_state.tasks.pop(i)
-            st.experimental_rerun()  # Refresh the app after deletion
+            st.rerun()  # Refresh the app after deletion
 else:
     st.info("No tasks added yet. Start by adding a new task!")
 
